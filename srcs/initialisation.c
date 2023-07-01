@@ -78,11 +78,15 @@ void	*routine(void *phil)
 	first(philo);
 	while (1)
 	{
+		if (philo->nbr_fork == 0)
+			take_fork(philo);
 		if (philo->nbr_fork == 2)
 			eat(philo);
+		usleep(100000);
+		//printf("kdfej: %d\n", refresh_time(philo->data) - philo->t_last_meal);
 		if (philo->nbr_fork == 3 && philo->data->time_eat < refresh_time(philo->data) - philo->t_last_meal)
 			sleeep(philo);
-		if (philo->nbr_fork == 4 && philo->data->time_sleep < refresh_time(philo->data) - philo->t_last_action)
+		else if (philo->nbr_fork == 4 && philo->data->time_sleep < refresh_time(philo->data) - philo->t_last_action)
 		{
 			if (philo->status)
 				free(philo->status);
@@ -90,9 +94,13 @@ void	*routine(void *phil)
 			philo->nbr_fork = 0;
 			printf("%d %d %s\n", refresh_time(philo->data), philo->index, philo->status);
 		}
+		//usleep(1000);
 		if (refresh_time(philo->data) - philo->t_last_meal >= philo->data->time_die)
+		{
+			printf ("DIED\n");
+			pthread_join(philo->id, NULL);
 			break;
-		take_fork(philo);
+		}
 	}
 	//close_thread(philo);
 	// usleep(30);

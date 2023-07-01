@@ -23,4 +23,11 @@ int	main(int ac, char **av)
 	set_time(data);
 	philo = create_philo(data);
 	close_thread(philo);
+// 	while (philo->index <= philo->data->nbr_p)
+// 	{	
+// 		pthread_join(philo->id, NULL);
+// 		printf("i");
+// 		philo = philo->next;                                                                                                 
+// 	}
+
 }
