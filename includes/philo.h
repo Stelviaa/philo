@@ -6,7 +6,7 @@
 /*   By: sforesti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 10:49:13 by sforesti          #+#    #+#             */
-/*   Updated: 2023/06/10 16:06:20 by sforesti         ###   ########.fr       */
+/*   Updated: 2023/07/02 16:42:34 by sforesti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,12 @@ typedef struct s_data {
 }					t_data;
 
 typedef struct s_philo {
-	int				index;
-	int				nbr_fork;
-	int				t_last_meal;
-	int				t_last_action;
-	char			*status;
+	int				*index;
+	int				*nbr_fork;
+	int				*t_last_meal;
+	int				*t_last_action;
 	t_data			*data;
-	pthread_t		id;
+	pthread_t		*id;
 	pthread_mutex_t	*fork;
 	struct s_philo	*prev;
 	struct s_philo	*next;
@@ -50,4 +49,10 @@ void	set_time(t_data *data);
 int		refresh_time(t_data *data);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strdup(char *src);
+void	first(t_philo *philo);
+void	take_fork(t_philo *philo);
+void	eat(t_philo *philo);
+void	sleeep(t_philo *philo);
+void	think(t_philo *philo);
+void	ft_usleep(int	time_wait, int time_at_start, t_philo *philo);
 #endif
