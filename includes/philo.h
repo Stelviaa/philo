@@ -6,7 +6,7 @@
 /*   By: sforesti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 10:49:13 by sforesti          #+#    #+#             */
-/*   Updated: 2023/07/02 16:42:34 by sforesti         ###   ########.fr       */
+/*   Updated: 2023/07/03 13:41:56 by sforesti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_philo {
 	int				*nbr_fork;
 	int				*t_last_meal;
 	int				*t_last_action;
+	int				died;
 	t_data			*data;
 	pthread_t		*id;
 	pthread_mutex_t	*fork;
@@ -54,5 +55,5 @@ void	take_fork(t_philo *philo);
 void	eat(t_philo *philo);
 void	sleeep(t_philo *philo);
 void	think(t_philo *philo);
-void	ft_usleep(int	time_wait, int time_at_start, t_philo *philo);
+void	ft_usleep(int	time_wait);
 #endif
