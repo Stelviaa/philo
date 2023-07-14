@@ -6,7 +6,7 @@
 /*   By: sforesti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 10:47:44 by sforesti          #+#    #+#             */
-/*   Updated: 2023/07/03 11:37:59 by sforesti         ###   ########.fr       */
+/*   Updated: 2023/07/12 10:42:54 by sforesti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	main(int ac, char **av)
 	philo = create_philo(data);
 	while (1)
 	{
-		if (refresh_time(philo->data) - philo->t_last_meal[0] >= philo->data->time_die)
+		if (refresh_time(philo->data) - philo->t_last_meal[0]
+			>= philo->data->time_die)
 		{
 			printf("%d %d is died\n", refresh_time(data), philo->index[0]);
 			while (++i <= data->nbr_p)

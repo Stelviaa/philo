@@ -6,48 +6,47 @@
 /*   By: sforesti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 10:56:11 by sforesti          #+#    #+#             */
-/*   Updated: 2023/07/03 13:53:09 by sforesti         ###   ########.fr       */
+/*   Updated: 2023/07/12 12:50:56 by sforesti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-
-
 void	*routine(void *phil)
 {
-	t_philo *philo = (t_philo *)phil;
+	t_philo	*philo;
+
+	philo = (t_philo *)phil;
 	if (philo->index[0] % 2 == 0)
 		usleep(500);
 	//take_fork(philo);
 	//first(philo);
+		usleep(100);
 	while (philo->died == 0)
 	{
-		if (philo->nbr_fork[0] == 0)
+		if (philo->nbr_fork[0] == 0 && philo->died == 0)
 			take_fork(philo);
-		if (philo->nbr_fork[0] == 2)
+		if (philo->nbr_fork[0] == 2 && philo->died == 0)
 		{
 			eat(philo);
 			usleep(philo->data->time_eat * 1000);
+			usleep(philo->data->time_eat * 1000);
 		}
-		if (philo->nbr_fork[0] == 3 && philo->data->time_eat < refresh_time(philo->data) - philo->t_last_meal[0])
+		if (philo->nbr_fork[0] == 3 && philo->data->time_eat
+			< refresh_time(philo->data) - philo->t_last_meal[0] && philo->died == 0)
 		{
 			sleeep(philo);
 			usleep(philo->data->time_sleep * 1000);
+			usleep(philo->data->time_sleep * 1000);
 		}
-		if (philo->nbr_fork[0] == 4 && philo->data->time_sleep < refresh_time(philo->data) - philo->t_last_action[0])
+		if (philo->nbr_fork[0] == 4 && philo->data->time_sleep
+			< refresh_time(philo->data) - philo->t_last_action[0] && philo->died == 0)
 			think(philo);
-		// if ()
-		// {
-		// 	printf("%d %d died\n", refresh_time(philo->data), philo->index[0]);
-		// 	exit(1);
-		// 	break;
-		// }
 	}
 	return (NULL);
 }
 
-t_philo 	*create_philo(t_data *data_gnl)
+t_philo	*create_philo(t_data *data_gnl)
 {
 	int		i;
 	t_philo	*philo_begin;
@@ -75,7 +74,7 @@ t_philo 	*create_philo(t_data *data_gnl)
 		philo->data = data_gnl;
 		philo->fork = malloc(sizeof(pthread_mutex_t));
 		philo->id = malloc(sizeof(pthread_t));
-		if (pthread_create(philo->id, NULL, &routine,(void *)philo) != 0)
+		if (pthread_create(philo->id, NULL, &routine, (void *)philo) != 0)
 			printf("Error pthread create\n");
 		if (pthread_mutex_init(philo->fork, NULL))
 			printf("Error pthread mutex create\n");
@@ -104,7 +103,6 @@ void	close_thread(t_philo *philo)
 			pthread_join(*philo->id, NULL);
 		else
 			pthread_join(*tmp->id, NULL);
-		printf("%d\n", i);
 	}
 }
 

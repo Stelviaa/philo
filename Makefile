@@ -1,4 +1,4 @@
-SRCS = srcs/main.c srcs/initialisation.c srcs/utils.c srcs/activity.c
+SRCS = srcs/main.c srcs/initialisation.c srcs/utils.c srcs/activity.c srcs/time.c
 SRCS_BONUS	= 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -pthread

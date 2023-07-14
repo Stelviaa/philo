@@ -6,7 +6,7 @@
 /*   By: sforesti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/02 11:42:36 by sforesti          #+#    #+#             */
-/*   Updated: 2023/07/03 11:57:46 by sforesti         ###   ########.fr       */
+/*   Updated: 2023/07/12 10:24:35 by sforesti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@ void	first(t_philo *philo)
 {
 	if (!pthread_mutex_lock(philo->fork)
 		&& !pthread_mutex_lock(philo->next->fork))
+	{
+		printf("%d %d has taken a fork\n",
+			refresh_time(philo->data), philo->index[0]);
+		printf("%d %d has taken a fork\n",
+			refresh_time(philo->data), philo->index[0]);
 	{
 		printf("%d %d has taken a fork\n", refresh_time(philo->data),philo->index[0]);
 		printf("%d %d has taken a fork\n", refresh_time(philo->data),philo->index[0]);
@@ -37,12 +42,19 @@ void	take_fork(t_philo *philo)
 		printf("%d %d has taken a fork\n", refresh_time(philo->data),philo->index[0]);
 		pthread_mutex_unlock(philo->display);
 		philo->nbr_fork[0] ++;
+		printf("%d %d has taken a fork\n",
+			refresh_time(philo->data), philo->index[0]);
+		philo->nbr_fork[0]++;
 	}
 	if (pthread_mutex_lock(philo->next->fork) == 0)
 	{	while (pthread_mutex_lock(philo->display))
 			continue;
 		printf("%d %d has taken a fork\n", refresh_time(philo->data),philo->index[0]);
 		philo->nbr_fork[0] ++;
+	{
+		printf("%d %d has taken a fork\n",
+			refresh_time(philo->data), philo->index[0]);
+		philo->nbr_fork[0]++;
 	}
 }
 
@@ -57,7 +69,6 @@ void	eat(t_philo *philo)
 			continue;
 	printf("%d %d is eating\n", time, philo->index[0]);
 	pthread_mutex_unlock(philo->display);
-
 }
 
 void	sleeep(t_philo *philo)
