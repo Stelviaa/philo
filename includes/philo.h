@@ -37,6 +37,7 @@ typedef struct s_philo {
 	t_data			*data;
 	pthread_t		*id;
 	pthread_mutex_t	*fork;
+	pthread_mutex_t *display;
 	struct s_philo	*prev;
 	struct s_philo	*next;
 }					t_philo;

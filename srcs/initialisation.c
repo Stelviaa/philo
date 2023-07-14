@@ -18,7 +18,7 @@ void	*routine(void *phil)
 {
 	t_philo *philo = (t_philo *)phil;
 	if (philo->index[0] % 2 == 0)
-		usleep(100);
+		usleep(500);
 	//take_fork(philo);
 	//first(philo);
 	while (philo->died == 0)
@@ -27,16 +27,13 @@ void	*routine(void *phil)
 			take_fork(philo);
 		if (philo->nbr_fork[0] == 2)
 		{
-			printf("1\n");
 			eat(philo);
-			printf("2\n");
-			ft_usleep(philo->data->time_eat);
-			printf("3\n");
+			usleep(philo->data->time_eat * 1000);
 		}
 		if (philo->nbr_fork[0] == 3 && philo->data->time_eat < refresh_time(philo->data) - philo->t_last_meal[0])
 		{
 			sleeep(philo);
-			ft_usleep(philo->data->time_sleep);
+			usleep(philo->data->time_sleep * 1000);
 		}
 		if (philo->nbr_fork[0] == 4 && philo->data->time_sleep < refresh_time(philo->data) - philo->t_last_action[0])
 			think(philo);
@@ -54,11 +51,15 @@ t_philo 	*create_philo(t_data *data_gnl)
 {
 	int		i;
 	t_philo	*philo_begin;
+	pthread_mutex_t *display;
 	t_philo	*philo;
 
 	i = 0;
 	philo = malloc(sizeof(t_philo));
 	philo_begin = philo;
+	display = malloc(sizeof(pthread_mutex_t));
+	if (pthread_mutex_init(display, NULL))
+		printf("Error pthread mutex create\n");
 	while (++i <= data_gnl->nbr_p)
 	{
 		philo->nbr_fork = malloc (sizeof(int));
@@ -69,6 +70,7 @@ t_philo 	*create_philo(t_data *data_gnl)
 		philo->t_last_action[0] = 0;
 		philo->t_last_meal = malloc(sizeof(int));
 		philo->t_last_meal[0] = 0;
+		philo->display = display;
 		philo->died = 0;
 		philo->data = data_gnl;
 		philo->fork = malloc(sizeof(pthread_mutex_t));
@@ -152,7 +154,7 @@ void	ft_usleep(int	time_wait)
 		time_refresh = (tv.tv_sec * 1000) + (tv.tv_usec / 1000) - time;
 		if (time_refresh - time > time_wait)
 			break;
-		usleep(500);
+		usleep(15);
 	}
 	return ;
 }
