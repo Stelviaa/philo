@@ -6,7 +6,7 @@
 /*   By: sforesti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 10:56:11 by sforesti          #+#    #+#             */
-/*   Updated: 2023/07/12 12:50:56 by sforesti         ###   ########.fr       */
+/*   Updated: 2023/07/15 15:38:30 by sforesti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,11 @@ void	*routine(void *phil)
 		{
 			eat(philo);
 			usleep(philo->data->time_eat * 1000);
-			usleep(philo->data->time_eat * 1000);
 		}
 		if (philo->nbr_fork[0] == 3 && philo->data->time_eat
 			< refresh_time(philo->data) - philo->t_last_meal[0] && philo->died == 0)
 		{
 			sleeep(philo);
-			usleep(philo->data->time_sleep * 1000);
 			usleep(philo->data->time_sleep * 1000);
 		}
 		if (philo->nbr_fork[0] == 4 && philo->data->time_sleep
@@ -120,39 +118,4 @@ t_data	*init_struct_data(char	**av, int ac)
 	else
 		data->count_eat = -1;
 	return (data);
-}
-
-void	set_time(t_data *data)
-{
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	data->start_time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
-}
-
-int	refresh_time(t_data *data)
-{
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000) - data->start_time);
-}
-
-void	ft_usleep(int	time_wait)
-{
-	struct timeval	tv;
-	suseconds_t time;
-	int	time_refresh;
-	
-	gettimeofday(&tv, NULL);
-	time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
-	while (1)
-	{
-		gettimeofday(&tv, NULL);
-		time_refresh = (tv.tv_sec * 1000) + (tv.tv_usec / 1000) - time;
-		if (time_refresh - time > time_wait)
-			break;
-		usleep(15);
-	}
-	return ;
 }
