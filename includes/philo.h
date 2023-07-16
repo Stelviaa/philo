@@ -6,7 +6,7 @@
 /*   By: sforesti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 10:49:13 by sforesti          #+#    #+#             */
-/*   Updated: 2023/07/03 13:41:56 by sforesti         ###   ########.fr       */
+/*   Updated: 2023/07/16 15:30:37 by sforesti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct s_data {
 	int				time_eat;
 	int				time_sleep;
 	int				count_eat;
+	int				nbr_meal;
 	int				nbr_p;
 	suseconds_t		start_time;
 }					t_data;
@@ -33,7 +34,8 @@ typedef struct s_philo {
 	int				*nbr_fork;
 	int				*t_last_meal;
 	int				*t_last_action;
-	int				died;
+	int				count_meal;
+	int				ok;
 	t_data			*data;
 	pthread_t		*id;
 	pthread_mutex_t	*fork;

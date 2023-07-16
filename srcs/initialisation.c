@@ -6,7 +6,7 @@
 /*   By: sforesti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 10:56:11 by sforesti          #+#    #+#             */
-/*   Updated: 2023/07/15 15:38:30 by sforesti         ###   ########.fr       */
+/*   Updated: 2023/07/16 16:44:04 by sforesti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,30 +18,48 @@ void	*routine(void *phil)
 
 	philo = (t_philo *)phil;
 	if (philo->index[0] % 2 == 0)
-		usleep(500);
-	//take_fork(philo);
-	//first(philo);
-		usleep(100);
-	while (philo->died == 0)
+	 	usleep(500);
+	while (1)
 	{
-		if (philo->nbr_fork[0] == 0 && philo->died == 0)
+		if (philo->nbr_fork[0] == 0)
 			take_fork(philo);
-		if (philo->nbr_fork[0] == 2 && philo->died == 0)
+		if (philo->nbr_fork[0] == 2)
 		{
 			eat(philo);
-			usleep(philo->data->time_eat * 1000);
+			ft_usleep(philo->data->time_eat - 1);
 		}
 		if (philo->nbr_fork[0] == 3 && philo->data->time_eat
-			< refresh_time(philo->data) - philo->t_last_meal[0] && philo->died == 0)
+			<= refresh_time(philo->data) - philo->t_last_meal[0])
 		{
 			sleeep(philo);
-			usleep(philo->data->time_sleep * 1000);
+			ft_usleep(philo->data->time_sleep - 1);
 		}
 		if (philo->nbr_fork[0] == 4 && philo->data->time_sleep
-			< refresh_time(philo->data) - philo->t_last_action[0] && philo->died == 0)
+			<= refresh_time(philo->data) - philo->t_last_action[0])
 			think(philo);
 	}
 	return (NULL);
+}
+
+void	init_philo(t_philo *philo, pthread_mutex_t *displ, t_data *data, int i)
+{
+	philo->nbr_fork = malloc (sizeof(int));
+	philo->nbr_fork[0] = 0;
+	philo->index = malloc(sizeof(int));
+	philo->index[0] = i;
+	philo->t_last_action = malloc(sizeof(int));
+	philo->t_last_action[0] = 0;
+	philo->t_last_meal = malloc(sizeof(int));
+	philo->t_last_meal[0] = 0;
+	philo->display = displ;
+	philo->count_meal = 0;
+	philo->data = data;
+	philo->ok = 0;
+	philo->fork = malloc(sizeof(pthread_mutex_t));
+	philo->id = malloc(sizeof(pthread_t));
+	pthread_mutex_init(philo->fork, NULL);
+	if (pthread_create(philo->id, NULL, &routine, (void *)philo) != 0)
+		printf("Error pthread create\n");
 }
 
 t_philo	*create_philo(t_data *data_gnl)
@@ -50,7 +68,7 @@ t_philo	*create_philo(t_data *data_gnl)
 	t_philo	*philo_begin;
 	pthread_mutex_t *display;
 	t_philo	*philo;
-
+	
 	i = 0;
 	philo = malloc(sizeof(t_philo));
 	philo_begin = philo;
@@ -59,23 +77,7 @@ t_philo	*create_philo(t_data *data_gnl)
 		printf("Error pthread mutex create\n");
 	while (++i <= data_gnl->nbr_p)
 	{
-		philo->nbr_fork = malloc (sizeof(int));
-		philo->nbr_fork[0] = 0;
-		philo->index = malloc(sizeof(int));
-		philo->index[0] = i;
-		philo->t_last_action = malloc(sizeof(int));
-		philo->t_last_action[0] = 0;
-		philo->t_last_meal = malloc(sizeof(int));
-		philo->t_last_meal[0] = 0;
-		philo->display = display;
-		philo->died = 0;
-		philo->data = data_gnl;
-		philo->fork = malloc(sizeof(pthread_mutex_t));
-		philo->id = malloc(sizeof(pthread_t));
-		if (pthread_create(philo->id, NULL, &routine, (void *)philo) != 0)
-			printf("Error pthread create\n");
-		if (pthread_mutex_init(philo->fork, NULL))
-			printf("Error pthread mutex create\n");
+		init_philo(philo, display, data_gnl, i);
 		if (i < data_gnl->nbr_p)
 		{
 			philo->next = malloc(sizeof(t_philo));
@@ -96,11 +98,16 @@ void	close_thread(t_philo *philo)
 	i = 0;
 	while (++i <= philo->data->nbr_p)
 	{
-		tmp = philo->next;
 		if (i == 1)
+		{
+			tmp = philo->next;
 			pthread_join(*philo->id, NULL);
+		}
 		else
-			pthread_join(*tmp->id, NULL);
+		{	
+			tmp = tmp->next;
+			pthread_join(*tmp->prev->id, NULL);
+		}
 	}
 }
 
@@ -113,6 +120,7 @@ t_data	*init_struct_data(char	**av, int ac)
 	data->time_die = ft_atoi(av[2]);
 	data->time_eat = ft_atoi(av[3]);
 	data->time_sleep = ft_atoi(av[4]);
+	data->nbr_meal = 0;
 	if (ac == 6)
 		data->count_eat = ft_atoi(av[5]);
 	else
