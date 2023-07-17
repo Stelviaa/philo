@@ -28,20 +28,31 @@ int	refresh_time(t_data *data)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000) - data->start_time);
 }
 
-void	ft_usleep(int time_wait)
+suseconds_t	set_time_u()
 {
 	struct timeval	tv;
-	suseconds_t		time;
-	long			time_refresh;
 
 	gettimeofday(&tv, NULL);
-	time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+	return (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+}
+
+int	refresh_time_u(start_time)
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000) - start_time);
+}
+
+void	ft_usleep(int time_wait)
+{
+	suseconds_t		start_time;
+	
+	start_time = set_time_u();
 	while (1)
 	{
-		usleep(500);
-		gettimeofday(&tv, NULL);
-		time_refresh = (tv.tv_sec * 1000) + (tv.tv_usec / 1000) - time;
-		if (time_refresh >= time_wait)
+		usleep(300);
+		if (refresh_time_u(start_time) >= time_wait)
 			break ;
 	}
 	return ;

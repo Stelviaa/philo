@@ -19,28 +19,28 @@ void	take_fork(t_philo *philo)
 		while (pthread_mutex_lock(philo->display))
 			continue;
 		printf("%d %d has taken a fork\n",
-			refresh_time(philo->data), philo->index[0]);
+			refresh_time(philo->data), philo->index);
 		pthread_mutex_unlock(philo->display);
-		philo->nbr_fork[0] ++;
+		philo->nbr_fork ++;
 	}
 	if (pthread_mutex_lock(philo->next->fork) == 0)
 	{	
 		while (pthread_mutex_lock(philo->display))
 			continue;
 		printf("%d %d has taken a fork\n",
-			refresh_time(philo->data),philo->index[0]);
+			refresh_time(philo->data),philo->index);
 		pthread_mutex_unlock(philo->display);
-		philo->nbr_fork[0] ++;
+		philo->nbr_fork ++;
 	}
 }
 
 void	eat(t_philo *philo)
 {
-	philo->nbr_fork[0] = 3;
-	philo->t_last_meal[0] = refresh_time(philo->data);
+	philo->nbr_fork = 3;
+	philo->t_last_meal = refresh_time(philo->data);
 	while (pthread_mutex_lock(philo->display))
 			continue;
-	printf("%d %d is eating\n", refresh_time(philo->data), philo->index[0]);
+	printf("%d %d is eating\n", refresh_time(philo->data), philo->index);
 	pthread_mutex_unlock(philo->display);
 }
 
@@ -48,19 +48,19 @@ void	sleeep(t_philo *philo)
 {
 	pthread_mutex_unlock(philo->fork);
 	pthread_mutex_unlock(philo->next->fork);
-	philo->nbr_fork[0] = 4;
-	philo->t_last_action[0] = refresh_time(philo->data);
+	philo->nbr_fork = 4;
+	philo->t_last_action = refresh_time(philo->data);
 	while (pthread_mutex_lock(philo->display))
 			continue;
-	printf("%d %d is sleeping\n", refresh_time(philo->data), philo->index[0]);
+	printf("%d %d is sleeping\n", refresh_time(philo->data), philo->index);
 	pthread_mutex_unlock(philo->display);
 }
 
 void	think(t_philo *philo)
 {
-	philo->nbr_fork[0] = 0;
+	philo->nbr_fork = 0;
 	while (pthread_mutex_lock(philo->display))
 			continue;
-	printf("%d %d is thinking\n", refresh_time(philo->data), philo->index[0]);
+	printf("%d %d is thinking\n", refresh_time(philo->data), philo->index);
 	pthread_mutex_unlock(philo->display);
 }

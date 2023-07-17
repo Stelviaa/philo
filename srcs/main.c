@@ -22,14 +22,15 @@ int	main(int ac, char **av)
 	data = init_struct_data(av, ac);
 	set_time(data);
 	philo = create_philo(data);
-	while (1)
+	//close_thread(philo);
+	while(1)
 	{
-		if (refresh_time(philo->data) - philo->t_last_meal[0]
+		if (refresh_time(philo->data) - philo->t_last_meal
 			>= philo->data->time_die)
 		{
 			while (pthread_mutex_lock(philo->display))
 				continue;
-			printf("%d %d is died\n", refresh_time(data), philo->index[0]);
+			printf("%d %d is died\n", refresh_time(data), philo->index);
 			return (0);
 		}
 	}

@@ -17,25 +17,25 @@ void	*routine(void *phil)
 	t_philo	*philo;
 
 	philo = (t_philo *)phil;
-	if (philo->index[0] % 2 == 0)
+	if (philo->index % 2 == 0)
 	 	usleep(500);
 	while (1)
 	{
-		if (philo->nbr_fork[0] == 0)
+		if (philo->nbr_fork == 0)
 			take_fork(philo);
-		if (philo->nbr_fork[0] == 2)
+		if (philo->nbr_fork == 2)
 		{
 			eat(philo);
 			ft_usleep(philo->data->time_eat - 1);
 		}
-		if (philo->nbr_fork[0] == 3 && philo->data->time_eat
-			<= refresh_time(philo->data) - philo->t_last_meal[0])
+		if (philo->nbr_fork == 3 && philo->data->time_eat
+			<= refresh_time(philo->data) - philo->t_last_meal)
 		{
 			sleeep(philo);
 			ft_usleep(philo->data->time_sleep - 1);
 		}
-		if (philo->nbr_fork[0] == 4 && philo->data->time_sleep
-			<= refresh_time(philo->data) - philo->t_last_action[0])
+		if (philo->nbr_fork == 4 && philo->data->time_sleep
+			<= refresh_time(philo->data) - philo->t_last_action)
 			think(philo);
 	}
 	return (NULL);
@@ -43,14 +43,10 @@ void	*routine(void *phil)
 
 void	init_philo(t_philo *philo, pthread_mutex_t *displ, t_data *data, int i)
 {
-	philo->nbr_fork = malloc (sizeof(int));
-	philo->nbr_fork[0] = 0;
-	philo->index = malloc(sizeof(int));
-	philo->index[0] = i;
-	philo->t_last_action = malloc(sizeof(int));
-	philo->t_last_action[0] = 0;
-	philo->t_last_meal = malloc(sizeof(int));
-	philo->t_last_meal[0] = 0;
+	philo->nbr_fork = 0;
+	philo->index = i;
+	philo->t_last_action = 0;
+	philo->t_last_meal = 0;
 	philo->display = displ;
 	philo->count_meal = 0;
 	philo->data = data;

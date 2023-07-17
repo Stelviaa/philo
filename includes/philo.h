@@ -30,10 +30,10 @@ typedef struct s_data {
 }					t_data;
 
 typedef struct s_philo {
-	int				*index;
-	int				*nbr_fork;
-	int				*t_last_meal;
-	int				*t_last_action;
+	int				index;
+	int				nbr_fork;
+	int				t_last_meal;
+	int				t_last_action;
 	int				count_meal;
 	int				ok;
 	t_data			*data;
