@@ -1,12 +1,12 @@
 SRCS = srcs/main.c srcs/initialisation.c srcs/utils.c srcs/activity.c srcs/time.c
 SRCS_BONUS	= 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror #-pthread
+CFLAGS = -Wall -Wextra -Werror -pthread
 CFLAGS += -Iincludes
 NAME = philo
 NAME_BONUS =
 RM = rm -f
-LIBS = #-fsanitize=thread
+LIBS = 
 
 OBJS = $(SRCS:.c=.o)
 OBJS_BONUS = $(SRCS_BONUS:.c=.o)
@@ -18,6 +18,9 @@ all:	$(NAME)
 
 $(NAME):	$(OBJS)
 			$(CC) -o $(NAME) $(OBJS)
+
+clang : fclean $(OBJS)
+		clang -fsanitize=thread -Iincludes -o $(NAME) $(OBJS)
 
 bonus: $(NAME_BONUS)
 

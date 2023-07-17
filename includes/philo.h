@@ -23,8 +23,8 @@ typedef struct s_data {
 	int				time_die;
 	int				time_eat;
 	int				time_sleep;
-	int				count_eat;
-	int				nbr_meal;
+	int				eat_limit;
+	int				nbr_philo_eat;
 	int				nbr_p;
 	suseconds_t		start_time;
 }					t_data;
@@ -34,13 +34,13 @@ typedef struct s_philo {
 	int				nbr_fork;
 	int				t_last_meal;
 	int				t_last_action;
-	int				count_meal;
+	int				nbr_meal;
 	int				ok;
 	t_data			*data;
 	pthread_t		*id;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t *display;
-	struct s_philo	*prev;
+	pthread_mutex_t *increment_meal;
 	struct s_philo	*next;
 }					t_philo;
 
@@ -59,4 +59,5 @@ void	eat(t_philo *philo);
 void	sleeep(t_philo *philo);
 void	think(t_philo *philo);
 void	ft_usleep(int	time_wait);
+void	is_died(t_philo *philo);
 #endif

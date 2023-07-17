@@ -19,7 +19,7 @@ void	*routine(void *phil)
 	philo = (t_philo *)phil;
 	if (philo->index % 2 == 0)
 	 	usleep(500);
-	while (1)
+	while (!philo->ok)
 	{
 		if (philo->nbr_fork == 0)
 			take_fork(philo);
@@ -48,7 +48,7 @@ void	init_philo(t_philo *philo, pthread_mutex_t *displ, t_data *data, int i)
 	philo->t_last_action = 0;
 	philo->t_last_meal = 0;
 	philo->display = displ;
-	philo->count_meal = 0;
+	philo->nbr_meal = 0;
 	philo->data = data;
 	philo->ok = 0;
 	philo->fork = malloc(sizeof(pthread_mutex_t));
@@ -60,52 +60,44 @@ void	init_philo(t_philo *philo, pthread_mutex_t *displ, t_data *data, int i)
 
 t_philo	*create_philo(t_data *data_gnl)
 {
-	int		i;
-	t_philo	*philo_begin;
+	int				i;
+	t_philo			*philo_begin;
 	pthread_mutex_t *display;
-	t_philo	*philo;
+	pthread_mutex_t *meal;
+	t_philo			*philo;
 	
 	i = 0;
 	philo = malloc(sizeof(t_philo));
 	philo_begin = philo;
 	display = malloc(sizeof(pthread_mutex_t));
-	if (pthread_mutex_init(display, NULL))
-		printf("Error pthread mutex create\n");
+	meal = malloc(sizeof(pthread_mutex_t));
+	pthread_mutex_init(display, NULL);
+	pthread_mutex_init(meal, NULL);
 	while (++i <= data_gnl->nbr_p)
 	{
 		init_philo(philo, display, data_gnl, i);
+		philo->increment_meal = meal;
 		if (i < data_gnl->nbr_p)
 		{
 			philo->next = malloc(sizeof(t_philo));
-			philo->next->prev = philo;
 			philo = philo->next;
 		}
 	}
 	philo->next = philo_begin;
-	philo_begin->prev = philo;
 	return (philo_begin);
 }
 
-void	close_thread(t_philo *philo)
-{
-	int		i;
-	t_philo	*tmp;
+// void	close_thread(t_philo *philo)
+// {
+// 	int		i;
+// 	t_philo	*tmp;
 
-	i = 0;
-	while (++i <= philo->data->nbr_p)
-	{
-		if (i == 1)
-		{
-			tmp = philo->next;
-			pthread_join(*philo->id, NULL);
-		}
-		else
-		{	
-			tmp = tmp->next;
-			pthread_join(*tmp->prev->id, NULL);
-		}
-	}
-}
+// 	i = 0;
+// 	while (++i <= philo->data->nbr_p)
+// 	{
+		
+// 	}
+// }
 
 t_data	*init_struct_data(char	**av, int ac)
 {
@@ -116,10 +108,10 @@ t_data	*init_struct_data(char	**av, int ac)
 	data->time_die = ft_atoi(av[2]);
 	data->time_eat = ft_atoi(av[3]);
 	data->time_sleep = ft_atoi(av[4]);
-	data->nbr_meal = 0;
+	data->nbr_philo_eat = 0;
 	if (ac == 6)
-		data->count_eat = ft_atoi(av[5]);
+		data->eat_limit = ft_atoi(av[5]);
 	else
-		data->count_eat = -1;
+		data->eat_limit = -1;
 	return (data);
 }
