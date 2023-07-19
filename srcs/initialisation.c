@@ -26,16 +26,16 @@ void	*routine(void *phil)
 		if (philo->nbr_fork == 2)
 		{
 			eat(philo);
-			ft_usleep(philo->data->time_eat - 1);
+			ft_usleep(philo->data->time_eat);
 		}
-		if (philo->nbr_fork == 3 && philo->data->time_eat
-			<= refresh_time(philo->data) - philo->t_last_meal)
+		if (philo->nbr_fork == 3 /*&& philo->data->time_eat
+			<= refresh_time(philo->data) - philo->t_last_meal*/)
 		{
 			sleeep(philo);
-			ft_usleep(philo->data->time_sleep - 1);
+			ft_usleep(philo->data->time_sleep);
 		}
-		if (philo->nbr_fork == 4 && philo->data->time_sleep
-			<= refresh_time(philo->data) - philo->t_last_action)
+		if (philo->nbr_fork == 4 /*&& philo->data->time_sleep
+			<= refresh_time(philo->data) - philo->t_last_action*/)
 			think(philo);
 	}
 	return (NULL);
@@ -75,8 +75,8 @@ t_philo	*create_philo(t_data *data_gnl)
 	pthread_mutex_init(meal, NULL);
 	while (++i <= data_gnl->nbr_p)
 	{
-		init_philo(philo, display, data_gnl, i);
 		philo->increment_meal = meal;
+		init_philo(philo, display, data_gnl, i);
 		if (i < data_gnl->nbr_p)
 		{
 			philo->next = malloc(sizeof(t_philo));

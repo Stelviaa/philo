@@ -69,7 +69,7 @@ void	think(t_philo *philo)
 void	is_died(t_philo *philo)
 {
 	while(philo->data->eat_limit == -1
-		|| philo->data->nbr_philo_eat != philo->data->nbr_p          )
+		|| philo->data->nbr_philo_eat != philo->data->nbr_p)
 	{
 		if (philo->data->eat_limit != -1 && philo->nbr_meal == philo->data->eat_limit)
 		{
