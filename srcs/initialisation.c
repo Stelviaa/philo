@@ -6,7 +6,7 @@
 /*   By: sforesti <sforesti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 10:56:11 by sforesti          #+#    #+#             */
-/*   Updated: 2023/09/16 12:28:22 by sforesti         ###   ########.fr       */
+/*   Updated: 2023/09/16 14:31:08 by sforesti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,11 @@ void	*routine(void *phil)
 	t_philo	*philo;
 
 	philo = (t_philo *)phil;
-	if (philo->index % 2 == 0)
-		usleep(300);
+	if (philo->index % 2 == 1)
+		usleep(philo->data->nbr_p * 199);
 	while (!philo->ok)
 	{
-		if (philo->nbr_fork == 0)
-			take_fork(philo);
+		take_fork(philo);
 		if (philo->nbr_fork == 2)
 		{
 			eat(philo);
@@ -87,12 +86,45 @@ t_philo	*create_philo(t_data *data_gnl)
 	return (philo_begin);
 }
 
+int	verif_syntax(char **av)
+{
+	int	i;
+	int	y;
+
+	i = 1;
+	y = 0;
+	while (av[i])
+	{
+		while (av[i][y])
+		{
+			if (av[i][y] != 43 && (av[i][y] == 45
+				|| av[i][y] > 57 || av[i][y] < 48))
+				return (0);
+			y ++;
+		}
+		y = 0;
+		i ++;
+	}
+	return (1);
+}
+
 t_data	*init_struct_data(char	**av, int ac)
 {
 	t_data	*data;
 
+	if (ac == 1 || (ac != 6 && ac != 5) || !verif_syntax(av))
+	{
+		printf ("Invalid Argument\n");
+		return (0);
+	}
 	data = malloc(sizeof(t_data));
 	data->nbr_p = ft_atoi(av[1]);
+	if (data->nbr_p < 1)
+	{
+		printf ("Not good number of philosophers\n");
+		free (data);
+		return (0);
+	}
 	data->time_die = ft_atoi(av[2]);
 	data->time_eat = ft_atoi(av[3]);
 	data->time_sleep = ft_atoi(av[4]);

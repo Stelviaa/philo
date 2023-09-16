@@ -6,7 +6,7 @@
 /*   By: sforesti <sforesti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 10:49:13 by sforesti          #+#    #+#             */
-/*   Updated: 2023/09/16 12:23:57 by sforesti         ###   ########.fr       */
+/*   Updated: 2023/09/16 14:30:35 by sforesti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct s_philo {
 
 t_philo		*create_philo(t_data *data);
 void		*routine(void *phil);
-int			ft_atoi(const char *str);
+long		ft_atoi(const char *str);
 void		close_thread(t_philo *philo);
 t_data		*init_struct_data(char	**av, int ac);
 void		set_time(t_data *data);
@@ -60,4 +60,5 @@ void		sleeep(t_philo *philo);
 void		think(t_philo *philo);
 void		ft_usleep(int time_wait);
 void		is_died(t_philo *philo);
+void		display(t_philo *philo, int mode);
 #endif

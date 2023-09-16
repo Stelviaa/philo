@@ -6,17 +6,17 @@
 /*   By: sforesti <sforesti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 17:28:37 by sforesti          #+#    #+#             */
-/*   Updated: 2023/09/16 12:26:59 by sforesti         ###   ########.fr       */
+/*   Updated: 2023/09/16 14:30:31 by sforesti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	ft_atoi(const char *str)
+long	ft_atoi(const char *str)
 {
 	int			i;
 	int			negative;
-	long int	nb;
+	long		nb;
 
 	i = 0;
 	negative = 1;
@@ -35,6 +35,8 @@ int	ft_atoi(const char *str)
 		nb += (str[i] - 48);
 		i ++;
 	}
+	if (nb > 2147483647 || nb < 0)
+		return (0);
 	return (nb * negative);
 }
 
