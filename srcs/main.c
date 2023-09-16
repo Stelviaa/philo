@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sforesti <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: sforesti <sforesti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 10:47:44 by sforesti          #+#    #+#             */
-/*   Updated: 2023/07/16 16:46:15 by sforesti         ###   ########.fr       */
+/*   Updated: 2023/09/16 12:13:39 by sforesti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,6 @@ int	main(int ac, char **av)
 	set_time(data);
 	philo = create_philo(data);
 	is_died(philo);
+	system("leaks philo");
 	return (1);
 }

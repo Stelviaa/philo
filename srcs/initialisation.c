@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialisation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sforesti <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: sforesti <sforesti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 10:56:11 by sforesti          #+#    #+#             */
-/*   Updated: 2023/07/16 16:44:04 by sforesti         ###   ########.fr       */
+/*   Updated: 2023/09/16 12:28:22 by sforesti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	*routine(void *phil)
 
 	philo = (t_philo *)phil;
 	if (philo->index % 2 == 0)
-	 	usleep(500);
+		usleep(300);
 	while (!philo->ok)
 	{
 		if (philo->nbr_fork == 0)
@@ -28,14 +28,14 @@ void	*routine(void *phil)
 			eat(philo);
 			ft_usleep(philo->data->time_eat);
 		}
-		if (philo->nbr_fork == 3 /*&& philo->data->time_eat
-			<= refresh_time(philo->data) - philo->t_last_meal*/)
+		if (philo->nbr_fork == 3 && philo->data->time_eat - 1
+			<= refresh_time(philo->data) - philo->t_last_meal)
 		{
 			sleeep(philo);
 			ft_usleep(philo->data->time_sleep);
 		}
-		if (philo->nbr_fork == 4 /*&& philo->data->time_sleep
-			<= refresh_time(philo->data) - philo->t_last_action*/)
+		if (philo->nbr_fork == 4 && philo->data->time_sleep - 1
+			<= refresh_time(philo->data) - philo->t_last_action)
 			think(philo);
 	}
 	return (NULL);
@@ -62,10 +62,10 @@ t_philo	*create_philo(t_data *data_gnl)
 {
 	int				i;
 	t_philo			*philo_begin;
-	pthread_mutex_t *display;
-	pthread_mutex_t *meal;
+	pthread_mutex_t	*display;
+	pthread_mutex_t	*meal;
 	t_philo			*philo;
-	
+
 	i = 0;
 	philo = malloc(sizeof(t_philo));
 	philo_begin = philo;
@@ -86,18 +86,6 @@ t_philo	*create_philo(t_data *data_gnl)
 	philo->next = philo_begin;
 	return (philo_begin);
 }
-
-// void	close_thread(t_philo *philo)
-// {
-// 	int		i;
-// 	t_philo	*tmp;
-
-// 	i = 0;
-// 	while (++i <= philo->data->nbr_p)
-// 	{
-		
-// 	}
-// }
 
 t_data	*init_struct_data(char	**av, int ac)
 {
